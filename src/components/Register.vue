@@ -41,9 +41,9 @@
                 <v-btn
                         @click.prevent="backToInitialPage()"
                         round
-                        dark
                         color="grey"
                         block
+                        dark
                 >
                     <v-icon center dark>keyboard_arrow_left</v-icon>
                 </v-btn>

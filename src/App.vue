@@ -3,8 +3,11 @@
     <v-app toolbar>
         <my-aside v-if="logged"></my-aside>
         <my-nav-top v-if="logged"></my-nav-top>
-        <main>
-            <router-view></router-view>
+        <main class="bgcolor">
+            <v-content v-if="logged">
+                <router-view ></router-view>
+            </v-content>
+            <router-view v-else></router-view>
         </main>
     </v-app>
   </div>
@@ -33,5 +36,7 @@ export default {
 </script>
 
 <style>
-
+    .bgcolor {
+        background-color: #e9ebee;
+    }
 </style>

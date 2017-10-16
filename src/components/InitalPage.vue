@@ -62,7 +62,7 @@
                             dark
                     >
                         Login
-                        <v-icon right dark>send</v-icon>
+                        <v-icon right color="dark">send</v-icon>
                     </v-btn>
                 </v-form>
             </v-flex>

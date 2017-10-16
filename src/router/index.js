@@ -11,6 +11,7 @@ router.beforeEach((to, from, next) => {
   if (!store.state.auth.check && to.meta.auth) {
     return router.push({name: 'InitialPage'})
   }
+  document.title = to.meta.title
   next()
 })
 

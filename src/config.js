@@ -1,8 +1,8 @@
 export default {
-  apiKey: 'AIzaSyCXAenFO5GCwG3LUrMSL4zDNjjV_5o-7pU',
-  authDomain: 'sistema-monitoria.firebaseapp.com',
-  databaseURL: 'https://sistema-monitoria.firebaseio.com',
-  projectId: 'sistema-monitoria',
-  storageBucket: 'sistema-monitoria.appspot.com',
-  messagingSenderId: '830422941629'
+  apiKey: 'AIzaSyCHOiU_5UZSz9Uy9jPmqzbYVIVypYi028g',
+  authDomain: 'monitoria-93ebd.firebaseapp.com',
+  databaseURL: 'https://monitoria-93ebd.firebaseio.com',
+  projectId: 'monitoria-93ebd',
+  storageBucket: 'monitoria-93ebd.appspot.com',
+  messagingSenderId: '591798288572'
 }
