@@ -13,8 +13,8 @@
             <v-list class="pa-0">
                 <v-list-tile avatar>
                     <v-list-tile-avatar>
-                        <img src="../assets/icon-user-default.png" v-if="user.photoURL === null">
-                        <img :src="user.photoURL" v-if="user.photoURL !== null" />
+                        <img src="../assets/icon-user-default.png" v-if="user.photoURL === ''">
+                        <img :src="user.photoURL" v-if="user.photoURL !== ''" />
                     </v-list-tile-avatar>
                     <v-list-tile-content>
                         <v-list-tile-title>{{ user.name }}</v-list-tile-title>
@@ -31,13 +31,13 @@
                         v-else-if="item.favoritedMonitors"
                         v-for="monitor in favoritedMonitors"
                         :key="monitor.id"
-                        @click="showMonitorDetails (monitor.id)"
+                        @click="showMonitorDetails (monitor)"
                 >
                     <v-list-tile-action>
                         <v-icon color="yellow darken--3">star</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-content>
-                        <v-list-tile-title> {{ monitor.name }} </v-list-tile-title>
+                        <v-list-tile-title> {{ monitor.subject.descricao }} </v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
                 <v-list-tile v-else
@@ -53,27 +53,44 @@
                 </v-list-tile>
             </template>
         </v-list>
+        <my-dialog-monitor-details
+                v-if="showDialog"
+                @closeDialog="showDialog = false"
+                :showDialog="showDialog"
+                :monitorDetailsData="monitorDetailsData"
+        >
+        </my-dialog-monitor-details>
     </v-navigation-drawer>
 </template>
 
 <script>
+  import DialogMonitorDetailsComponent from './DialogMonitorDetails.vue'
   export default {
+    components: {
+      'my-dialog-monitor-details': DialogMonitorDetailsComponent
+    },
+    created () {
+      this.$store.dispatch('getFavoriteMonitorData')
+    },
     data () {
       return {
         user: {
-          name: this.$store.state.auth.user.name,
+          name: this.$store.state.auth.user.nome,
           photoURL: this.$store.state.auth.user.photoURL
         },
         items: [
           {title: 'Dashboard', icon: 'dashboard', route: 'dashboard'},
-          {title: 'Profile', icon: 'account_box', route: 'profile'},
+          {title: 'Perfil', icon: 'account_box', route: 'profile'},
           {divider: true},
           {heading: 'Monitorias Favoritas'},
           {favoritedMonitors: true},
           {divider: true},
           {title: 'Forum', icon: 'forum', route: 'forum.main'},
-          {title: 'Ajuda', icon: 'help', route: 'help'}
-        ]
+          {title: 'Ajuda', icon: 'help', route: 'help'},
+          {title: 'Sair', icon: 'fa-sign-out', route: 'logout'}
+        ],
+        showDialog: false,
+        monitorDetailsData: {}
       }
     },
     computed: {
@@ -81,18 +98,19 @@
         return this.$store.state.showDrawer
       },
       favoritedMonitors () {
-        return [
-          {name: 'monitoria 1', id: 'id1'},
-          {name: 'monitoria 2', id: 'id2'}
-        ]
+        return this.$store.state.auth.favoriteMonitors
       }
     },
     methods: {
       changeRoute (route) {
-        this.$router.push({name: route})
+        route === 'logout'
+          ? this.$store.dispatch('logout')
+                .then(response => this.$router.push({name: 'InitialPage'}))
+          : this.$router.push({name: route})
       },
-      showMonitorDetails (monitorId) {
-        // implement
+      showMonitorDetails (monitor) {
+        this.monitorDetailsData = monitor
+        this.showDialog = true
       }
     }
   }

@@ -3,6 +3,7 @@ import RegisterComponenent from '../components/Register.vue'
 import DashboardComponent from '../components/MainDashboard.vue'
 import CampusComponent from '../components/Campus.vue'
 import SubjectComponent from '../components/Subject.vue'
+import ProfileComponent from '../components/Profile.vue'
 
 export default [
   {
@@ -47,7 +48,16 @@ export default [
     component: SubjectComponent,
     meta: {
       auth: true,
-      title: 'Disciplina - MonitorClub'
+      title: 'Disciplina - MonitoClub'
+    }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileComponent,
+    meta: {
+      auth: true,
+      title: 'Perfil - MonitoClub'
     }
   }
 ]

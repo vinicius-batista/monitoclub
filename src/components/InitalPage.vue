@@ -10,7 +10,7 @@
             <v-flex md2 offset-md4
                     xs8 offset-xs2
                     style="margin-right: 2rem">
-                <v-btn primary
+                <v-btn color="primary"
                        round
                        block
                        @click.prevent="loginExternalProvider('facebook')">

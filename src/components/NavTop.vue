@@ -7,9 +7,8 @@
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
         <v-btn icon
-               large
                @click.prevent="logout()">
-            <v-icon>fa-sign-out</v-icon>
+            <v-icon medium>fa-sign-out</v-icon>
         </v-btn>
     </v-toolbar>
 </template>
@@ -19,7 +18,6 @@
   export default {
     data () {
       return {
-        search: ''
       }
     },
     methods: {

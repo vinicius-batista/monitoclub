@@ -54,6 +54,12 @@
 <script>
     import store from '../store/index'
     export default {
+      created () {
+        if (this.$store.state.auth.user.universidade_Id !== '') {
+          const campusId = this.$store.state.auth.user.unidade_Academica_Id
+          this.$router.push({name: 'campus', params: {id: campusId}})
+        }
+      },
       mounted () {
         if (this.universities.length === 0) {
           this.$store.dispatch('getAllUniversities')
@@ -78,7 +84,7 @@
         }
       },
       computed: {
-        universities: () => store.state.universities,
+        universities: () => store.state.universityData.universities,
         universitiesFiltred () {
           if (this.universities && this.search) {
             return this.universities.filter((university) => university.name

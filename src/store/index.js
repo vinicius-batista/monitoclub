@@ -2,29 +2,27 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
 import actions from './actions'
-import Cookie from '../services/cookie'
+import moduleUser from './modules/moduleUser'
+import moduleUniversities from './modules/moduleUniversities'
 
 Vue.use(Vuex)
 
 const state = {
-  showDrawer: true,
-  auth: {
-    check: Cookie.get('token') != null,
-    user: Cookie.getObject('user')
-  },
-  universities: [],
-  campus: [],
-  subjects: []
+  showDrawer: true
 }
 
 const getters = {
-  oneCampus: (state) => (id) => state.campus.find((campus) => campus.id === id),
-  oneSubject: (state) => (id) => state.subjects.find((subject) => subject.id === id)
+}
+
+const modules = {
+  auth: moduleUser,
+  universityData: moduleUniversities
 }
 
 export default new Vuex.Store({
   state,
   getters,
   mutations,
-  actions
+  actions,
+  modules
 })

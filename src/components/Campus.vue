@@ -5,7 +5,7 @@
                     md6 offset-md3
                     lg4 offset-lg4
             >
-                <div class="text-md-center">
+                <div class="text-md-center" v-if="campusLoaded">
                     <v-toolbar-title>{{ campus.name }}</v-toolbar-title>
                 </div>
             </v-flex>
@@ -64,8 +64,13 @@
 
 <script>
     export default {
-      mounted () {
+      created () {
         if (this.departaments.length === 0) {
+          this.$store.dispatch('getCampusById', this.$route.params.id)
+            .then((campus) => {
+              this.campus = campus
+              this.campusLoaded = true
+            })
           this.$store.dispatch('getDepartaments', this.$route.params.id)
             .then((departaments) => {
               this.departaments = departaments
@@ -73,11 +78,13 @@
             })
         } else {
           this.loaded = true
+          this.campusLoaded = true
         }
       },
       data () {
         return {
           campus: this.$store.getters.oneCampus(this.$route.params.id),
+          campusLoaded: false,
           departaments: [],
           loaded: false,
           search: '',

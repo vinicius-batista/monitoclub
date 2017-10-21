@@ -5,9 +5,6 @@ import App from './App.vue'
 import router from './router'
 import Vuetify from 'vuetify'
 import store from './store/index'
-import Vuefire from 'vuefire'
-
-Vue.use(Vuefire)
 
 Vue.config.productionTip = false
 Vue.use(Vuetify)

@@ -38,7 +38,6 @@
                                     <span>Local: {{ monitoria.salas }}</span>
                                 </v-list-tile-content>
                                 <v-list-tile-action>
-                                    <v-icon color="yellow">star</v-icon>
                                 </v-list-tile-action>
                             </v-list-tile>
                         </v-list>
@@ -47,7 +46,20 @@
                         </div>
                     </v-card-text>
                     <v-spacer></v-spacer>
-                    <v-card-actions >
+                    <v-card-actions>
+                        <v-btn flat
+                               @click="addFavorite()"
+                               v-if="!isFavorited"
+                        >
+                            Adicionar aos favoritos
+                        </v-btn>
+                        <v-btn flat
+                               color="red"
+                               @click="removeFavorite()"
+                               v-if="isFavorited"
+                        >
+                            Remover dos favoritos
+                        </v-btn>
                     </v-card-actions>
                 </v-card>
             </v-flex>
@@ -58,12 +70,15 @@
 <script>
     export default {
       mounted () {
-        if (this.$store.state.subjects.length === 0) {
+        if (this.$store.state.universityData.subjects.length === 0) {
           return this.$store
             .dispatch('getSubjectById', this.$route.params.id)
             .then((response) => {
               this.subject = response
               this.loadedSubject = true
+            })
+            .catch((err) => {
+              console.log(err)
             })
         } else {
           this.subject = this.$store.getters.oneSubject(this.$route.params.id)
@@ -90,6 +105,19 @@
         }
       },
       computed: {
+        isFavorited () {
+          const searchMonitor = (monitor) => monitor.id === this.monitor.id
+          const result = this.$store.state.auth.favoriteMonitors.find(searchMonitor)
+          return result !== undefined
+        }
+      },
+      methods: {
+        addFavorite () {
+          this.$store.dispatch('addFavoriteMonitor', this.monitor.id)
+        },
+        removeFavorite () {
+          this.$store.dispatch('removeFavoriteMonitor', this.monitor.id)
+        }
       }
     }
 </script>

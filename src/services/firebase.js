@@ -12,5 +12,6 @@ export default {
   campus: FireBaseApp.database().ref('Unidades_Academicas'),
   departaments: FireBaseApp.database().ref('Departamentos'),
   subjects: FireBaseApp.database().ref('Materias'),
-  monitors: FireBaseApp.database().ref('Monitores')
+  monitors: FireBaseApp.database().ref('Monitores'),
+  userById: (id) => FireBaseApp.database().ref(`Usuario/${id}`)
 }
