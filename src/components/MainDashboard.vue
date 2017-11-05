@@ -1,8 +1,9 @@
 <template>
-    <v-container fluid>
+    <v-container grid-list-xs>
         <v-layout row wrap>
             <v-flex xs12
-                    md8 offset-md2>
+                    lg6 offset-lg2
+            >
                 <v-text-field
                         single-line
                         append-icon="search"
@@ -14,8 +15,8 @@
         </v-layout>
         <v-layout row wrap>
             <v-flex xs12
-                    md8 offset-md2
-                    style="padding-top: 2em"
+                    lg8 offset-lg1
+                    class="border"
             >
                 <v-list three-line v-if="loaded">
                     <v-list-group v-for="item in universitiesFiltred" :key="item.id">
@@ -43,7 +44,7 @@
                         </div>
                     </v-list-group>
                 </v-list>
-                <div v-if="!loaded">
+                <div v-if="!loaded" class="text-sm-center">
                     <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
                 </div>
             </v-flex>

@@ -1,16 +1,15 @@
 <template>
-    <v-container fluid>
+    <v-container grid-list-xs>
         <v-layout row wrap
                   style="padding-top: 4em"
         >
             <v-flex xs12
-                    md8 offset-md2
+                    lg8 offset-lg1
                     class="box"
             >
                 <v-layout row wrap >
                     <v-flex xs8 offset-xs2
-                            md6 offset-md3
-                            lg4 offset-lg4
+                            lg4 offset-lg3
                     >
                         <div class="text-md-center">
                             <v-toolbar-title>Dados pessoais</v-toolbar-title>
@@ -19,8 +18,8 @@
                 </v-layout>
                 <v-layout row wrap
                           style="padding-top: 1.5em"  >
-                    <v-flex md8 offset-md2
-                            xs10
+                    <v-flex lg9 offset-lg1
+                            xs10 offset-xs1
                     >
                         <v-form v-model="valid">
                             <v-alert error :value="errMessage">
@@ -61,12 +60,12 @@
                     </v-flex>
                 </v-layout>
                 <v-layout row wrap>
-                    <v-flex md4 offset-md4
+                    <v-flex lg4 offset-lg3
                             xs6 offset-xs3
                     >
                         <v-btn
                                 @click.prevent="submit"
-                                color="grey"
+                                color="primary"
                                 round
                                 block
                                 dark

@@ -3,15 +3,15 @@ import Firebase from 'firebase'
 
 const FireBaseApp = Firebase.initializeApp(FireBaseConfig)
 
-export default {
-  database: FireBaseApp.database(),
-  auth: FireBaseApp.auth(),
-  googleProvider: new Firebase.auth.GoogleAuthProvider(),
-  facebookProvider: new Firebase.auth.FacebookAuthProvider(),
-  universities: FireBaseApp.database().ref('Universidades').orderByChild('name'),
-  campus: FireBaseApp.database().ref('Unidades_Academicas'),
-  departaments: FireBaseApp.database().ref('Departamentos'),
-  subjects: FireBaseApp.database().ref('Materias'),
-  monitors: FireBaseApp.database().ref('Monitores'),
-  userById: (id) => FireBaseApp.database().ref(`Usuario/${id}`)
-}
+export const database = FireBaseApp.database()
+export const auth = FireBaseApp.auth()
+export const googleProvider = new Firebase.auth.GoogleAuthProvider()
+export const facebookProvider = new Firebase.auth.FacebookAuthProvider()
+export const universities = FireBaseApp.database().ref('Universidades').orderByChild('name')
+export const campus = FireBaseApp.database().ref('Unidades_Academicas')
+export const departaments = FireBaseApp.database().ref('Departamentos')
+export const subjects = FireBaseApp.database().ref('Materias')
+export const monitors = FireBaseApp.database().ref('Monitores')
+export const userById = (id) => FireBaseApp.database().ref(`Usuario/${id}`)
+export const topicos = FireBaseApp.database().ref().child('Topicos')
+export const replys = FireBaseApp.database().ref().child('Respostas')

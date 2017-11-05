@@ -4,6 +4,7 @@
             persistent
             height="100%"
             clipped
+            :mobile-break-point="960"
             enable-resize-watcher
             v-model="drawer"
             drawer
@@ -42,7 +43,9 @@
                 </v-list-tile>
                 <v-list-tile v-else
                              :key="item.title"
-                             @click.prevent="changeRoute(item.route)"
+                             @click.prevent="item.params
+                             ? changeRouteParams(item.route, item.params)
+                             : changeRoute(item.route)"
                 >
                     <v-list-tile-action>
                         <v-icon> {{ item.icon }} </v-icon>
@@ -53,21 +56,21 @@
                 </v-list-tile>
             </template>
         </v-list>
-        <my-dialog-monitor-details
+        <aside-monitor-details
                 v-if="showDialog"
                 @closeDialog="showDialog = false"
                 :showDialog="showDialog"
                 :monitorDetailsData="monitorDetailsData"
         >
-        </my-dialog-monitor-details>
+        </aside-monitor-details>
     </v-navigation-drawer>
 </template>
 
 <script>
-  import DialogMonitorDetailsComponent from './DialogMonitorDetails.vue'
+  import AsideMonitorDetailsComponent from './AsideMonitorDetails.vue'
   export default {
     components: {
-      'my-dialog-monitor-details': DialogMonitorDetailsComponent
+      'aside-monitor-details': AsideMonitorDetailsComponent
     },
     created () {
       this.$store.dispatch('getFavoriteMonitorData')
@@ -85,7 +88,11 @@
           {heading: 'Monitorias Favoritas'},
           {favoritedMonitors: true},
           {divider: true},
-          {title: 'Forum', icon: 'forum', route: 'forum.main'},
+          {title: 'Forum',
+            icon: 'forum',
+            route: 'forum.main',
+            params: {id: this.$store.state.auth.user.unidade_Academica_Id}
+          }, // colocar id do campus do usuer como params!
           {title: 'Ajuda', icon: 'help', route: 'help'},
           {title: 'Sair', icon: 'fa-sign-out', route: 'logout'}
         ],
@@ -102,6 +109,9 @@
       }
     },
     methods: {
+      changeRouteParams (route, params) {
+        this.$router.push({name: route, params})
+      },
       changeRoute (route) {
         route === 'logout'
           ? this.$store.dispatch('logout')

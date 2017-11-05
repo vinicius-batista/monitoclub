@@ -115,12 +115,12 @@
             
             this.$store
               .dispatch('loginEmailPassword', user)
-              .then((response) => {
-                this.$router.push({name: 'dashboard'})
-              })
               .catch((err) => {
                 this.errMessage.err = true
                 return err
+              })
+              .then((response) => {
+                this.$router.push({name: 'dashboard'})
               })
           }
         },

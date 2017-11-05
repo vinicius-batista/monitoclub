@@ -1,12 +1,14 @@
 import Cookie from '../../services/cookie'
-import firebaseApp from '../../services/firebase'
+import {
+  userById,
+  auth,
+  googleProvider,
+  facebookProvider,
+  monitors,
+  subjects
+} from '../../services/firebase'
 
-const userById = firebaseApp.userById
-const auth = firebaseApp.auth
-const googleProvider = firebaseApp.googleProvider
-const facebookProvider = firebaseApp.facebookProvider
-const monitors = firebaseApp.monitors
-const subjects = firebaseApp.subjects
+const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const state = {
   check: Cookie.get('token') != null,
@@ -42,7 +44,7 @@ const actions = {
       const user = response.val()
       return user
     } catch (err) {
-      return err
+      throw err
     }
   },
   updateUserInfo: async (context, user) => {
@@ -53,7 +55,7 @@ const actions = {
       
       return response
     } catch (err) {
-      return err
+      throw err
     }
   },
   loginEmailPassword: async (context, {email, password}) => {
@@ -66,7 +68,7 @@ const actions = {
       context.commit('authenticated', response.refreshToken)
       return response
     } catch (err) {
-      return err
+      throw err
     }
   },
   registerEmailPassword: async (context, {email, password, displayName}) => {
@@ -80,7 +82,7 @@ const actions = {
       
       return response
     } catch (err) {
-      return err
+      throw err
     }
   },
   loginExternalAuth: async (context, provider) => {
@@ -90,15 +92,18 @@ const actions = {
         : provider = facebookProvider
       
       const response = await auth.signInWithPopup(provider)
-      
       const token = response.credential.accessToken
-      const user = await context.dispatch('getUserInfo', response.user.uid)
       
+      await timeout(2000)
+      
+      const user = await context.dispatch('getUserInfo', response.user.uid)
+  
       context.commit('setUser', user)
       context.commit('authenticated', token)
+      
       return response
     } catch (err) {
-      return err
+      throw err
     }
   },
   logout: async (context) => {
@@ -107,7 +112,7 @@ const actions = {
       context.commit('unauthenticated')
       return response
     } catch (err) {
-      return err
+      throw err
     }
   },
   addFavoriteMonitor: (context, monitorId) => {
@@ -149,7 +154,7 @@ const actions = {
       
       return favoriteMonitors
     } catch (err) {
-      return err
+      throw err
     }
   }
 }

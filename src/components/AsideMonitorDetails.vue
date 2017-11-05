@@ -2,6 +2,7 @@
     <v-dialog v-model="dialogShow"
               full-width
               max-width="500"
+              persistent
     >
         <v-card>
             <v-card-title primary-title>
@@ -12,23 +13,11 @@
                 </div>
             </v-card-title>
             <v-card-text>
-                <v-list v-if="monitorDetailsData.monitorias" three-line>
-                    <v-list-tile
-                            v-for="(monitoria, i) in monitorDetailsData.monitorias"
-                            :key="i"
-                            @click=""
-                            style="padding: 1em 0 1em 0"
-                    >
-                        <v-list-tile-content>
-                            <span>Inicio: {{ monitoria.inicio }}</span>
-                            <span>Fim: {{ monitoria.fim }}</span>
-                            <span>Dias: {{ monitoria.diaSemana }}</span>
-                            <span>Local: {{ monitoria.salas }}</span>
-                        </v-list-tile-content>
-                        <v-list-tile-action>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                </v-list>
+                <monitor-data-table
+                        v-if="monitorDetailsData.monitorias"
+                        :dataTable="this.monitorDataTable()"
+                >
+                </monitor-data-table>
                 <div v-else>
                     <span>Dados sobre as monitorias nao foi informado</span>
                 </div>
@@ -42,7 +31,11 @@
 </template>
 
 <script>
+    import MonitorDataTable from './MonitorDataTable.vue'
     export default {
+      components: {
+        'monitor-data-table': MonitorDataTable
+      },
       props: {
         showDialog: {
           type: Boolean
@@ -61,6 +54,17 @@
         closeDialog () {
           this.$emit('closeDialog')
           this.dialogShow = false
+        },
+        monitorDataTable () {
+          const tableMap = (monitoria) => {
+            return {
+              value: false,
+              horario: `${monitoria.inicio} - ${monitoria.fim}`,
+              dayOfWeek: monitoria.diaSemana,
+              local: monitoria.salas
+            }
+          }
+          return this.monitorDetailsData.monitorias.map(tableMap)
         }
       }
     }

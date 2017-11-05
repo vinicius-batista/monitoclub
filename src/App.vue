@@ -36,7 +36,12 @@ export default {
 </script>
 
 <style>
-    .bgcolor {
-        background-color: #e9ebee;
+    .border {
+        background-color: #ffffff;
+        box-sizing: border-box;
+        margin-top: 1.5em;
+        -webkit-box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
+        -moz-box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
+        box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
     }
 </style>

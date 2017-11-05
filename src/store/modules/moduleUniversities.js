@@ -1,10 +1,10 @@
-import firebaseApp from '../../services/firebase'
-
-const universities = firebaseApp.universities
-const campus = firebaseApp.campus
-const departaments = firebaseApp.departaments
-const subjects = firebaseApp.subjects
-const monitors = firebaseApp.monitors
+import {
+  universities,
+  campus,
+  departaments,
+  subjects,
+  monitors
+} from '../../services/firebase'
 
 const state = {
   universities: [],
@@ -49,7 +49,7 @@ const actions = {
       context.commit('setUniversities', listUniversities)
       return response
     } catch (err) {
-      return err
+      throw err
     }
   },
   getCampus: async (context, universityId) => {
@@ -67,7 +67,7 @@ const actions = {
       
       return listCampus
     } catch (err) {
-      return err
+      throw err
     }
   },
   getCampusById: async (context, campusId) => {
@@ -75,7 +75,7 @@ const actions = {
       const response = await campus.child(campusId).once('value')
       return response.val()
     } catch (err) {
-      return err
+      throw err
     }
   },
   getDepartaments: async (context, campusId) => {
@@ -92,7 +92,7 @@ const actions = {
       
       return listDepartaments
     } catch (err) {
-      return err
+      throw err
     }
   },
   getSubjects: async (context, departamentId) => {
@@ -101,7 +101,9 @@ const actions = {
         .orderByChild('departamentoId')
         .equalTo(departamentId)
         .once('value')
+      
       const listSubjects = []
+      
       response.forEach((subject) => {
         listSubjects.push(subject.val())
         context.commit('setOneSubject', subject.val())
@@ -109,7 +111,7 @@ const actions = {
       
       return listSubjects
     } catch (err) {
-      return err
+      throw err
     }
   },
   getMonitor: async (context, subjectId) => {
@@ -126,7 +128,7 @@ const actions = {
       
       return monitorFinal
     } catch (err) {
-      return err
+      throw err
     }
   },
   getSubjectById: async (context, subjectId) => {
@@ -144,7 +146,7 @@ const actions = {
       
       return subjectFinal
     } catch (err) {
-      return err
+      throw err
     }
   }
 }

@@ -4,6 +4,7 @@ import mutations from './mutations'
 import actions from './actions'
 import moduleUser from './modules/moduleUser'
 import moduleUniversities from './modules/moduleUniversities'
+import moduleForum from './modules/moduleForum'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ const getters = {
 
 const modules = {
   auth: moduleUser,
-  universityData: moduleUniversities
+  universityData: moduleUniversities,
+  forum: moduleForum
 }
 
 export default new Vuex.Store({

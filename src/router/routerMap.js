@@ -4,6 +4,9 @@ import DashboardComponent from '../components/MainDashboard.vue'
 import CampusComponent from '../components/Campus.vue'
 import SubjectComponent from '../components/Subject.vue'
 import ProfileComponent from '../components/Profile.vue'
+import HelpComponent from '../components/Help.vue'
+import ForumMainComponent from '../components/ForumMain.vue'
+import ForumTopicComponent from '../components/ForumTopic.vue'
 
 export default [
   {
@@ -58,6 +61,33 @@ export default [
     meta: {
       auth: true,
       title: 'Perfil - MonitoClub'
+    }
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: HelpComponent,
+    meta: {
+      title: 'Ajuda - MonitoClub',
+      auth: true
+    }
+  },
+  {
+    path: '/forum/:id',
+    name: 'forum.main',
+    component: ForumMainComponent,
+    meta: {
+      title: 'Forum - MonitoClub',
+      auth: true
+    }
+  },
+  {
+    path: '/forum/topic/:id',
+    name: 'forum.topic',
+    component: ForumTopicComponent,
+    meta: {
+      title: 'Forum - MonitoClub',
+      auth: true
     }
   }
 ]

@@ -1,9 +1,8 @@
 <template>
-    <v-container fluid>
+    <v-container grid-list-xs>
         <v-layout row wrap>
             <v-flex xs12
-                    md6 offset-md3
-                    lg4 offset-lg4
+                    lg8 offset-lg1
             >
                 <div class="text-xs-center" v-if="loadedSubject">
                     <v-toolbar-title>{{ subject.descricao }}</v-toolbar-title>
@@ -12,8 +11,8 @@
         </v-layout>
         <v-layout row  wrap>
             <v-flex xs12
-                    md8 offset-md2
-                    style="padding-top: 2em; overflow:auto"
+                    lg8 offset-lg1
+                    class="border"
             >
                 <v-card v-if="loaded">
                     <v-card-title primary-title>
@@ -24,23 +23,11 @@
                         </div>
                     </v-card-title>
                     <v-card-text>
-                        <v-list v-if="monitor.monitorias" three-line>
-                            <v-list-tile
-                                       v-for="(monitoria, i) in monitor.monitorias"
-                                       :key="i"
-                                       @click=""
-                                       style="padding: 1em 0 1em 0"
-                            >
-                                <v-list-tile-content>
-                                    <span>Inicio: {{ monitoria.inicio }}</span>
-                                    <span>Fim: {{ monitoria.fim }}</span>
-                                    <span>Dias: {{ monitoria.diaSemana }}</span>
-                                    <span>Local: {{ monitoria.salas }}</span>
-                                </v-list-tile-content>
-                                <v-list-tile-action>
-                                </v-list-tile-action>
-                            </v-list-tile>
-                        </v-list>
+                        <monitor-data-table
+                                v-if="monitor.monitorias"
+                                :dataTable="this.dataTable"
+                        >
+                        </monitor-data-table>
                         <div v-else>
                             <span>Dados sobre as monitorias nao foi informado</span>
                         </div>
@@ -62,46 +49,37 @@
                         </v-btn>
                     </v-card-actions>
                 </v-card>
+                <div v-if="!loaded" class="text-sm-center">
+                    <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
+                </div>
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
+    import MonitorDataTable from './MonitorDataTable.vue'
+    
     export default {
-      mounted () {
+      components: {
+        'monitor-data-table': MonitorDataTable
+      },
+      created () {
         if (this.$store.state.universityData.subjects.length === 0) {
-          return this.$store
-            .dispatch('getSubjectById', this.$route.params.id)
-            .then((response) => {
-              this.subject = response
-              this.loadedSubject = true
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+          this.getSubjectData()
         } else {
           this.subject = this.$store.getters.oneSubject(this.$route.params.id)
           this.loadedSubject = true
         }
-        
-        if (!this.monitor) {
-          this.$store.dispatch('getMonitor', this.$route.params.id)
-            .then((monitor) => {
-              this.monitor = monitor
-              this.loaded = true
-            })
-            .catch((err) => {
-              return err
-            })
-        }
+        this.getMonitorData()
       },
       data () {
         return {
           monitor: null,
           loaded: false,
           loadedSubject: false,
-          subject: {}
+          subject: {},
+          dataTable: []
         }
       },
       computed: {
@@ -112,16 +90,53 @@
         }
       },
       methods: {
+        getMonitorData () {
+          this.$store.dispatch('getMonitor', this.$route.params.id)
+            .then((monitor) => {
+              this.monitor = monitor
+              this.monitorTableData()
+            })
+            .catch((err) => {
+              return err
+            })
+        },
+        getSubjectData () {
+          return this.$store
+            .dispatch('getSubjectById', this.$route.params.id)
+            .then((response) => {
+              this.subject = response
+              this.loadedSubject = true
+            })
+            .catch((err) => {
+              return err
+            })
+        },
         addFavorite () {
           this.$store.dispatch('addFavoriteMonitor', this.monitor.id)
         },
         removeFavorite () {
           this.$store.dispatch('removeFavoriteMonitor', this.monitor.id)
+        },
+        monitorTableData () {
+          const tableMap = (monitoria) => {
+            return {
+              value: false,
+              horario: `${monitoria.inicio} - ${monitoria.fim}`,
+              dayOfWeek: monitoria.diaSemana,
+              local: monitoria.salas
+            }
+          }
+          this.dataTable = this.monitor.monitorias.map(tableMap)
+          this.loaded = true
         }
       }
     }
 </script>
 
 <style lang="scss" scoped>
-
+    .border {
+        -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.12);
+        -moz-box-shadow: 0 1px 10px rgba(0,0,0,.12);
+        box-shadow: 0 1px 10px rgba(0,0,0,.12);
+    }
 </style>

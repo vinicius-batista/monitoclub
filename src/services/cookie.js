@@ -12,7 +12,7 @@ export default {
     return Vue.cookie.get(key) || value
   },
   setObject (key, value, time) {
-    Vue.cookie.set(key, JSON.stringify(value), time)
+    Vue.cookie.set(key, JSON.stringify(value), {expires: time})
     return this.getObject(key)
   },
   getObject (key) {

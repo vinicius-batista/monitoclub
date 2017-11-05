@@ -1,9 +1,8 @@
 <template>
-    <v-container fluid>
+    <v-container grid-list-xs>
         <v-layout row wrap>
             <v-flex xs12
-                    md6 offset-md3
-                    lg4 offset-lg4
+                    lg8 offset-lg1
             >
                 <div class="text-md-center" v-if="campusLoaded">
                     <v-toolbar-title>{{ campus.name }}</v-toolbar-title>
@@ -12,27 +11,27 @@
         </v-layout>
         <v-layout row wrap>
             <v-flex xs12
-                    md8 offset-md2
+                    lg6 offset-lg2
             >
                 <v-text-field
                         single-line
                         append-icon="search"
-                        solo
                         placeholder="Search"
+                        solo
                         v-model="search"
                 ></v-text-field>
             </v-flex>
         </v-layout>
         <v-layout row wrap>
             <v-flex xs12
-                    md8 offset-md2
-                    style="padding-top: 2em; overflow:auto"
+                    lg8 offset-lg1
+                    class="border"
             >
                 <v-list three-line v-if="loaded">
                     <v-list-group v-for="item in departamentsFiltred" :key="item.id">
                         <v-list-tile slot="item" @click="getSubjects(item.id)">
                             <v-list-tile-avatar>
-                                <img :src="item.iconeUrl" :alt="item.name">
+                                <img :src="item.iconeUrl">
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>{{ item.name }}</v-list-tile-title>
@@ -54,7 +53,7 @@
                         </div>
                     </v-list-group>
                 </v-list>
-                <div v-if="!loaded">
+                <div v-if="!loaded" class="text-sm-center">
                     <v-progress-circular indeterminate :size="50" color="primary"></v-progress-circular>
                 </div>
             </v-flex>
@@ -63,66 +62,65 @@
 </template>
 
 <script>
-    export default {
-      created () {
-        if (this.departaments.length === 0) {
-          this.$store.dispatch('getCampusById', this.$route.params.id)
-            .then((campus) => {
-              this.campus = campus
-              this.campusLoaded = true
+  export default {
+    created () {
+      if (this.departaments.length === 0) {
+        this.$store.dispatch('getCampusById', this.$route.params.id)
+          .then((campus) => {
+            this.campus = campus
+            this.campusLoaded = true
+          })
+        this.$store.dispatch('getDepartaments', this.$route.params.id)
+          .then((departaments) => {
+            this.departaments = departaments
+            this.loaded = true
+          })
+      }
+      this.loaded = true
+      this.campusLoaded = true
+    },
+    data () {
+      return {
+        campus: this.$store.getters.oneCampus(this.$route.params.id),
+        campusLoaded: false,
+        departaments: [],
+        loaded: false,
+        search: '',
+        subjectsLoaded: false,
+        subjects: [],
+        lastDepartamentId: ''
+      }
+    },
+    computed: {
+      departamentsFiltred () {
+        if (this.departaments && this.search) {
+          return this.departaments.filter((departament) => departament.name
+            .toLowerCase()
+            .indexOf(this.search.toLowerCase()) >= 0)
+        }
+        return this.departaments
+      }
+    },
+    methods: {
+      getSubjects (departamentId) {
+        if (departamentId !== this.lastDepartamentId) {
+          return this.$store.dispatch('getSubjects', departamentId)
+            .then((subjects) => {
+              this.subjectsLoaded = true
+              this.subjects = subjects
+              this.lastDepartamentId = departamentId
             })
-          this.$store.dispatch('getDepartaments', this.$route.params.id)
-            .then((departaments) => {
-              this.departaments = departaments
-              this.loaded = true
+            .catch((err) => {
+              this.subjectsLoaded = false
+              return err
             })
-        } else {
-          this.loaded = true
-          this.campusLoaded = true
         }
       },
-      data () {
-        return {
-          campus: this.$store.getters.oneCampus(this.$route.params.id),
-          campusLoaded: false,
-          departaments: [],
-          loaded: false,
-          search: '',
-          subjectsLoaded: false,
-          subjects: [],
-          lastDepartamentId: ''
-        }
-      },
-      computed: {
-        departamentsFiltred () {
-          if (this.departaments && this.search) {
-            return this.departaments.filter((departament) => departament.name
-              .toLowerCase()
-              .indexOf(this.search.toLowerCase()) >= 0)
-          }
-          return this.departaments
-        }
-      },
-      methods: {
-        getSubjects (departamentId) {
-          if (departamentId !== this.lastDepartamentId) {
-            return this.$store.dispatch('getSubjects', departamentId)
-              .then((subjects) => {
-                this.subjectsLoaded = true
-                this.subjects = subjects
-                this.lastDepartamentId = departamentId
-              })
-              .catch((err) => {
-                this.subjectsLoaded = false
-                return err
-              })
-          }
-        },
-        changeRouteToSubject (subjectId) {
-          this.$router.push({name: 'subject', params: {id: subjectId}})
-        }
+      changeRouteToSubject (subjectId) {
+        this.$router.push({name: 'subject', params: {id: subjectId}})
       }
     }
+  }
 </script>
 
 <style lang="scss" scoped>

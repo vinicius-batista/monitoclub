@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar class="green darken-1" fixed clipped-left app>
+    <v-toolbar class="blue darken-1" fixed clipped-left app>
         <v-toolbar-title  class="ml-0 pl-3">
             <v-toolbar-side-icon @click.stop="showDrawer"></v-toolbar-side-icon>
             MonitoClub
