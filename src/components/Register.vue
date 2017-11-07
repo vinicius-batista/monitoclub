@@ -14,12 +14,6 @@
                         {{ errMessage }}
                     </v-alert>
                     <v-text-field
-                            prepend-icon="person"
-                            label="Nome"
-                            v-model="name"
-                            :rules="nameRules"
-                    ></v-text-field>
-                    <v-text-field
                             prepend-icon="email"
                             label="E-mail"
                             v-model="email"
@@ -87,9 +81,6 @@
             (v) => v.length >= 8 || 'Senha precisa ter no minimo 8 caracteres'
           ],
           name: '',
-          nameRules: [
-            (v) => !!v || 'Nome e obrigatorio'
-          ],
           errMessage: ''
         }
       },

@@ -16,6 +16,12 @@ const state = {
   favoriteMonitors: []
 }
 
+const getters = {
+  getUser (state) {
+    return state.user
+  }
+}
+
 const mutations = {
   setUser (state, user) {
     state.user = Cookie.setObject('user', user, '1M')
@@ -161,6 +167,7 @@ const actions = {
 
 const UserModules = {
   state,
+  getters,
   mutations,
   actions
 }

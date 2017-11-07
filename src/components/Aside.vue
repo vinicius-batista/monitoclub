@@ -18,7 +18,7 @@
                         <img :src="user.photoURL" v-if="user.photoURL !== ''" />
                     </v-list-tile-avatar>
                     <v-list-tile-content>
-                        <v-list-tile-title>{{ user.name }}</v-list-tile-title>
+                        <v-list-tile-title>{{ user.nome }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
@@ -77,25 +77,6 @@
     },
     data () {
       return {
-        user: {
-          name: this.$store.state.auth.user.nome,
-          photoURL: this.$store.state.auth.user.photoURL
-        },
-        items: [
-          {title: 'Dashboard', icon: 'dashboard', route: 'dashboard'},
-          {title: 'Perfil', icon: 'account_box', route: 'profile'},
-          {divider: true},
-          {heading: 'Monitorias Favoritas'},
-          {favoritedMonitors: true},
-          {divider: true},
-          {title: 'Forum',
-            icon: 'forum',
-            route: 'forum.main',
-            params: {id: this.$store.state.auth.user.unidade_Academica_Id}
-          }, // colocar id do campus do usuer como params!
-          {title: 'Ajuda', icon: 'help', route: 'help'},
-          {title: 'Sair', icon: 'fa-sign-out', route: 'logout'}
-        ],
         showDialog: false,
         monitorDetailsData: {}
       }
@@ -106,7 +87,26 @@
       },
       favoritedMonitors () {
         return this.$store.state.auth.favoriteMonitors
-      }
+      },
+      user () {
+        return this.$store.getters.getUser
+      },
+      items () {
+        return [
+          {title: 'Dashboard', icon: 'dashboard', route: 'dashboard'},
+          {title: 'Perfil', icon: 'account_box', route: 'profile'},
+          {divider: true},
+          {heading: 'Monitorias Favoritas'},
+          {favoritedMonitors: true},
+          {divider: true},
+          {title: 'Forum',
+            icon: 'forum',
+            route: 'forum.main',
+            params: {id: this.user.unidade_Academica_Id}
+          },
+          {title: 'Sair', icon: 'fa-sign-out', route: 'logout'}
+        ]
+      } 
     },
     methods: {
       changeRouteParams (route, params) {
@@ -115,7 +115,7 @@
       changeRoute (route) {
         route === 'logout'
           ? this.$store.dispatch('logout')
-                .then(response => this.$router.push({name: 'InitialPage'}))
+              .then(response => this.$router.push({name: 'InitialPage'}))
           : this.$router.push({name: route})
       },
       showMonitorDetails (monitor) {
