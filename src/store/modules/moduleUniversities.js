@@ -39,10 +39,10 @@ const mutations = {
 const actions = {
   getAllUniversities: async (context) => {
     try {
-      let response = await universities.once('value')
-      const listUniversities = []
+      const response = await universities.once('value')
+      let listUniversities = []
       
-      response.forEach(async (university) => {
+      response.forEach((university) => {
         listUniversities.push(university.val())
       })
       
