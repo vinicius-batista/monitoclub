@@ -2,6 +2,14 @@
 
 > Projeto para auxiliar monitorias universitarias
 
+## Feito com: 
+* Vuejs
+* Vuetify
+* Firebase
+
+## Demo
+Pode ser conferido em: https://monitoclub.herokuapp.com/
+
 ## Build Setup
 
 ``` bash
@@ -26,5 +34,3 @@ npm run e2e
 # run all tests
 npm test
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
