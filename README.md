@@ -1,4 +1,4 @@
-# sistema-monitorias
+# MonitoClub
 
 > Projeto para auxiliar monitorias universitarias
 
